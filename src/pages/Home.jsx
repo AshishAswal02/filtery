@@ -3,13 +3,15 @@ import SearchBar from '../components/home/SearchBar/index'
 import FilterPanel from '../components/home/FilterPanel/index'
 import List from '../components/home/List/index'
 // import EmptyView from '../components/common/EmptyView/index'
-import { } from '../constants/index'
+import { dataList } from '../constants/index'
 import './styles.css'
 
 const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState([1000,5000]);
+  const [list, setList] = useState(dataList);
   const [cuisines, setCuisines] = useState([
     {
       id: 1,
@@ -27,14 +29,15 @@ const Home = () => {
       label: 'Chinese'
     },
   ])
+
   const handleSelectCategory = (e, value) => !value ? null : setSelectedCategory(value);
   const handleSelectRating = (e, value) => !value ? null : setSelectedRating(value);
+  const handlePriceChange = (e, value) => setSelectedPrice(value);
   const handleChangeChecked = id => {
     const cuisinesList = cuisines;
     const newCusineList = cuisinesList.map( item =>
       item.id === id  ? {...item, checked: !item.checked }: item
     ) 
-
     setCuisines(newCusineList);
   }
 
@@ -54,12 +57,15 @@ const Home = () => {
             selectedRating={selectedRating}
             cuisines={cuisines}
             changeChecked = {handleChangeChecked}
+            selectedPrice = {selectedPrice}
+            changedPrice = {handlePriceChange}
           />
         </div>
         <div className="home_list-wrap">
 
           {/* List and empty view */}
-          <List />
+          <List list = {list}/>
+          
         </div>
       </div>
 
