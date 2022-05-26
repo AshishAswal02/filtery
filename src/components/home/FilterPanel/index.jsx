@@ -2,9 +2,19 @@ import React from 'react'
 import FilterListToggle from '../../common/FilterListToggle'
 import { categoryList, ratingList } from '../../../constants/index'
 import CheckboxFilter from '../../common/CheckboxFilter/index'
+import SliderFilter from '../../common/SliderFilter/index'
 import './styles.css'
 
-const FilterPanel = ({ selectToggle, selectedCategory, selectRating, selectedRating, cuisines, changeChecked }) => {
+const FilterPanel = ({
+  selectToggle,
+  selectedCategory,
+  selectRating,
+  selectedRating,
+  cuisines,
+  changeChecked,
+  selectedPrice,
+  changedPrice
+}) => {
   return (
     <div className='filter-panel'>
       {/* Category */}
@@ -20,10 +30,12 @@ const FilterPanel = ({ selectToggle, selectedCategory, selectRating, selectedRat
       <div className="input-group">
         <p className="label">Cuisines</p>
         {
-          cuisines.map(cuisine => <CheckboxFilter key={cuisine.id} cuisine={cuisine} changeChecked={changeChecked}/>)
+          cuisines.map(cuisine => <CheckboxFilter key={cuisine.id} cuisine={cuisine} changeChecked={changeChecked} />)
         }
       </div>
       {/* Price Range */}
+      <SliderFilter value={selectedPrice} changedPrice={changedPrice} />
+
       {/* Star rating */}
       <div className="input-group">
         <p className="label">Start Rating</p>

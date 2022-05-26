@@ -1,11 +1,14 @@
 import React from 'react'
-
-const List = () => {
+import './styles.css'
+import  ListItem  from './ListItem/index'
+const List = ({ list }) => {
   return (
-    <div className='list'>
-      <h1>List</h1>
+    <div className='list-wrap'>
+      {
+        list.map(item => <ListItem key={item.id} item={item} />)
+      }
     </div>
-    )
+  )
 }
 
 export default List
