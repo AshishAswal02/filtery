@@ -1,9 +1,10 @@
-import React from 'react'
+import { Card, CardMedia } from '@material-ui/core'
+import './styles.css'
 
 const EmptyView = () => {
   return (
-    <div>
-        <h1>EmptyView</h1>
+    <div className='emptyView-wrap'>
+        <img className='emptyView_img' src="/images/gif/noresult.gif" alt="emptyView" />
     </div>
 
   )

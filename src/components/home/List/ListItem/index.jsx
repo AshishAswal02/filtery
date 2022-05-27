@@ -9,7 +9,7 @@ const ListItem = ({ item: { title, serviceTime, deliveryFee, category, cuisine, 
                 <span>⭐{rating}</span>
             </header>
             <footer>
-                <p><b>{serviceTime}</b> <span> Delivery fee ${deliveryFee}</span></p>
+                <p><b>{serviceTime}</b> &nbsp; <span> Delivery fee ${deliveryFee}</span></p>
                 <p><b>${price}</b></p>
             </footer>
         </div>

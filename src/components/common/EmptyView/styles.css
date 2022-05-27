@@ -1,0 +1,15 @@
+.emptyView-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 6rem;
+    height: 100px;
+    
+    /* width: 100%; */
+}
+
+.emptyView_img {
+    object-fit: cover;
+    max-width: 500px;
+    width: 100%;
+}
