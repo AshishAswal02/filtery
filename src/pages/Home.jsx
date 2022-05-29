@@ -4,6 +4,7 @@ import FilterPanel from '../components/home/FilterPanel/index'
 import List from '../components/home/List/index'
 import EmptyView from '../components/common/EmptyView/index'
 import { dataList } from '../constants/index'
+import { useDebounce } from 'use-debounce'
 import './styles.css'
 
 const Home = () => {
@@ -11,8 +12,10 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState([1000, 5000]);
+  const [debouncedSelectedPrice] = useDebounce(selectedPrice, 1000);
   const [list, setList] = useState(dataList);
   const [inputSearch, setInputSearch] = useState('');
+  const [debouncedInputSearch] = useDebounce(inputSearch, 1000);
   const [resultFound, setResultFound] = useState(false);
   const [cuisines, setCuisines] = useState([
     {
@@ -33,11 +36,11 @@ const Home = () => {
   ])
 
   const handleSelectCategory = (e, value) => {
-    if(value === null) return setSelectedCategory(null);
+    if (value === null) return setSelectedCategory(null);
     return !value ? null : setSelectedCategory(value)
   };
   const handleSelectRating = (e, value) => {
-    if(value === null) return setSelectedRating(null);
+    if (value === null) return setSelectedRating(null);
     return !value ? null : setSelectedRating(value);
   }
   const handlePriceChange = (e, value) => setSelectedPrice(value);
@@ -48,6 +51,8 @@ const Home = () => {
     )
     setCuisines(newCusineList);
   }
+
+
 
   const applyFilters = () => {
     let updatedList = dataList;
@@ -85,31 +90,27 @@ const Home = () => {
     }
 
     // search filter
-    if (inputSearch) {
-      updatedList = handleSearch(updatedList);
+    if (debouncedInputSearch) {
+      updatedList = updatedList.filter(
+        item => {
+          const itemTitle = item.title.toLocaleLowerCase();
+          const inputString = debouncedInputSearch.toLocaleLowerCase().trim();
+
+          return itemTitle.search(inputString) !== -1;
+        }
+      )
     }
 
     setList(updatedList);
 
     // if there are no results found after applying filters
-    updatedList.length ? setResultFound(true) : setResultFound(false); 
+    updatedList.length ? setResultFound(true) : setResultFound(false);
   }
 
-  const handleSearch = (updatedList) => {
-    updatedList = updatedList.filter(
-      item => {
-        const itemTitle = item.title.toLocaleLowerCase();
-        const inputString = inputSearch.toLocaleLowerCase().trim();
-
-        return itemTitle.search(inputString) !== -1;
-      }
-    )
-    return updatedList;
-  }
 
   useEffect(() => {
     applyFilters();
-  }, [selectedRating, selectedCategory, cuisines, selectedPrice, inputSearch])
+  }, [selectedRating, selectedCategory, cuisines, debouncedSelectedPrice, debouncedInputSearch])
 
 
   return (
@@ -136,7 +137,7 @@ const Home = () => {
 
           {/* List and empty view */}
           {
-            resultFound ? <List list={list} /> : <EmptyView/>
+            resultFound ? <List list={list} /> : <EmptyView />
           }
 
         </div>
