@@ -8,7 +8,7 @@
     /* width: 100%; */
 }
 
-.emptyView_img {
+.emptyView-wrap img{
     object-fit: cover;
     max-width: 500px;
     width: 100%;

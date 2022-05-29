@@ -34,7 +34,9 @@ const FilterPanel = ({
         }
       </div>
       {/* Price Range */}
-      <SliderFilter value={selectedPrice} changedPrice={changedPrice} />
+      <div className="input-group">
+        <SliderFilter value={selectedPrice} changedPrice={changedPrice} />
+      </div>
 
       {/* Star rating */}
       <div className="input-group">

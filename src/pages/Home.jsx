@@ -18,7 +18,7 @@ const Home = () => {
     {
       id: 1,
       checked: false,
-      label: 'American'
+      label: 'Indian'
     },
     {
       id: 2,
@@ -32,8 +32,14 @@ const Home = () => {
     },
   ])
 
-  const handleSelectCategory = (e, value) => !value ? null : setSelectedCategory(value);
-  const handleSelectRating = (e, value) => !value ? null : setSelectedRating(value);
+  const handleSelectCategory = (e, value) => {
+    if(value === null) return setSelectedCategory(null);
+    return !value ? null : setSelectedCategory(value)
+  };
+  const handleSelectRating = (e, value) => {
+    if(value === null) return setSelectedRating(null);
+    return !value ? null : setSelectedRating(value);
+  }
   const handlePriceChange = (e, value) => setSelectedPrice(value);
   const handleChangeChecked = id => {
     const cuisinesList = cuisines;
@@ -80,20 +86,25 @@ const Home = () => {
 
     // search filter
     if (inputSearch) {
-      updatedList = updatedList.filter(
-        item => {
-          const itemTitle = item.title.toLocaleLowerCase();
-          const inputString = inputSearch.toLocaleLowerCase().trim();
-
-          return itemTitle.search(inputString) !== -1;
-        }
-      )
+      updatedList = handleSearch(updatedList);
     }
 
     setList(updatedList);
 
     // if there are no results found after applying filters
     updatedList.length ? setResultFound(true) : setResultFound(false); 
+  }
+
+  const handleSearch = (updatedList) => {
+    updatedList = updatedList.filter(
+      item => {
+        const itemTitle = item.title.toLocaleLowerCase();
+        const inputString = inputSearch.toLocaleLowerCase().trim();
+
+        return itemTitle.search(inputString) !== -1;
+      }
+    )
+    return updatedList;
   }
 
   useEffect(() => {
