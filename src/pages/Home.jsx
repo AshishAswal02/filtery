@@ -4,11 +4,53 @@ import FilterPanel from '../components/home/FilterPanel/index'
 import List from '../components/home/List/index'
 import EmptyView from '../components/common/EmptyView/index'
 import { dataList } from '../constants/index'
+import { Drawer, Box, IconButton } from '@material-ui/core'
+import {  } from '@material-ui/icons'
 import { useDebounce } from 'use-debounce'
+import { makeStyles } from "@material-ui/core"
+import { FilterList, ExpandLess, ExpandMore} from "@material-ui/icons"
 import './styles.css'
 
-const Home = () => {
+const useStyles = makeStyles({
+  drawer: {
+    height: "50%",
+    width: '100%',
+  },
+  drawerPaper: {
+    height: '50%',
+    width: '100%',
+    borderTopLeftRadius: '5%',
+    borderTopRightRadius: '5%'
+  },
+  drawerPaper1: {
+    height: "10%",
+    width: '100%',
+    borderTopLeftRadius: '5%',
+    borderTopRightRadius: '5%'
+  },
+  filterBox: {
+    margin: 22,
+  },
+  arrowBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: -25
+  },
+  arrow: {
+    fontSize: 45,
+    color: 'primary'
+  },
+  filterIcon: {
+    fontSize: 30,
+    // color: '#000',
+    color: '#0000007d'
+  }
 
+
+})
+
+const Home = () => {
+  const classes = useStyles();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState([1000, 5000]);
@@ -17,6 +59,8 @@ const Home = () => {
   const [inputSearch, setInputSearch] = useState('');
   const [debouncedInputSearch] = useDebounce(inputSearch, 1000);
   const [resultFound, setResultFound] = useState(false);
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+  const [drawerTutorial, setDrawerTutorial] = useState(false);
   const [cuisines, setCuisines] = useState([
     {
       id: 1,
@@ -36,11 +80,11 @@ const Home = () => {
   ])
 
   const handleSelectCategory = (e, value) => {
-    if (value === null) return setSelectedCategory(null);
+    if (value == null && window.screen.width >= 875) return setSelectedCategory(null);
     return !value ? null : setSelectedCategory(value)
   };
   const handleSelectRating = (e, value) => {
-    if (value === null) return setSelectedRating(null);
+    if (value === null && window.screen.width >= 875) return setSelectedRating(null);
     return !value ? null : setSelectedRating(value);
   }
   const handlePriceChange = (e, value) => setSelectedPrice(value);
@@ -113,35 +157,92 @@ const Home = () => {
   }, [selectedRating, selectedCategory, cuisines, debouncedSelectedPrice, debouncedInputSearch])
 
 
+  //for tutorial purpose
+  useEffect(() => {
+    setTimeout(() => {
+      setToggleDrawer(true);
+      setDrawerTutorial(true);
+    }, 1000)
+    setTimeout(() => {
+      setToggleDrawer(false);
+    }, 2000);
+    setTimeout(() => {
+      setDrawerTutorial(false);
+    }, 2500);
+  },[])
+
+
   return (
     <div className="home">
-      {/* Search bar */}
-      <SearchBar value={inputSearch} changeInput={e => setInputSearch(e.target.value)} />
+      <header className="header">
 
-      <div className="home_panelList-wrap">
-        <div className="home_panel-wrap">
+        {/* Search bar */}
+        <div className="searchbar">
+          <SearchBar value={inputSearch} changeInput={e => setInputSearch(e.target.value)} />
+        </div>
+        <div className='options'>
+          <IconButton className={classes.IconButton}
+            onClick={() => setToggleDrawer(true)}
+          >
+            <FilterList className={classes.filterIcon}/>
+          </IconButton>
+        </div>
+
+      </header>
+      <body>
+
+        <div className="home_panelList-wrap">
 
           {/* Side pannel */}
-          <FilterPanel
-            selectToggle={handleSelectCategory}
-            selectedCategory={selectedCategory}
-            selectRating={handleSelectRating}
-            selectedRating={selectedRating}
-            cuisines={cuisines}
-            changeChecked={handleChangeChecked}
-            selectedPrice={selectedPrice}
-            changedPrice={handlePriceChange}
-          />
-        </div>
-        <div className="home_list-wrap">
+          <Drawer
+            anchor="bottom"
+            className={`${'classes.drawer show_drawer'} `}
+            open={toggleDrawer}
+            onOpen={() => setToggleDrawer(true)}
+            onClose={() => setToggleDrawer(false)}
+            classes={{ paper: drawerTutorial ? classes.drawerPaper1 : classes.drawerPaper }}
+            >
+            <Box className={classes.filterBox}>
+              <Box className={classes.arrowBox} >
+                {toggleDrawer ?
+                  <ExpandMore className={classes.arrow} color='disabled'  />
+                  :
+                  <ExpandLess className={classes.arrow} color='disabled' />
+                }
+              </Box>
+              <FilterPanel
+                selectToggle={handleSelectCategory}
+                selectedCategory={selectedCategory}
+                selectRating={handleSelectRating}
+                selectedRating={selectedRating}
+                cuisines={cuisines}
+                changeChecked={handleChangeChecked}
+                selectedPrice={selectedPrice}
+                changedPrice={handlePriceChange}
+              />
+            </Box>
+          </Drawer>
 
+          <div className='home_panel-wrap'>
+            <FilterPanel
+              selectToggle={handleSelectCategory}
+              selectedCategory={selectedCategory}
+              selectRating={handleSelectRating}
+              selectedRating={selectedRating}
+              cuisines={cuisines}
+              changeChecked={handleChangeChecked}
+              selectedPrice={selectedPrice}
+              changedPrice={handlePriceChange}
+            />
+          </div>
           {/* List and empty view */}
-          {
-            resultFound ? <List list={list} /> : <EmptyView />
-          }
-
+          <div className="home_list-wrap">
+            {
+              resultFound ? <List list={list} /> : <EmptyView />
+            }
+          </div>
         </div>
-      </div>
+      </body>
 
 
     </div>

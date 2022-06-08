@@ -7,20 +7,84 @@
 .home_panelList-wrap,
 .home_panel-wrap,
 .home_list-wrap {
-    overflow-y: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+
 }
 
 .home_panelList-wrap {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
 }
 
 .home_panel-wrap {
-    flex-basis: 350px;
-    padding: 1rem;
+  flex-basis: 330px;
+  padding: 1rem;
+}
+
+.show-sidebar {
+  transform: translate(0);
+}
+
+@media screen and (max-width: 875px) {
+  .home_panel-wrap {
+    display: none;
+  }
 }
 
 .home_list-wrap {
   flex: 1;
   padding: 1rem;
+}
+
+.header {
+  display: flex;
+}
+
+.searchbar {
+  flex-grow: 1;
+}
+
+.options {
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  animation: waggle 1s 3s forwards ease-out;
+}
+
+@keyframes waggle {
+  0% {
+    transform: none;
+  }
+  50% {
+    transform: rotateZ(-20deg) scale(1.4);
+  }
+  60% {
+    transform: rotateZ(25deg) scale(1.4);
+  }
+  67.5% {
+    transform: rotateZ(-15deg) scale(1.4);
+  }
+  75% {
+    transform: rotateZ(15deg) scale(1.4);
+  }
+  82.5% {
+    transform: rotateZ(-12deg) scale(1.4);
+  }
+  85% {
+    transform: rotateZ(0) scale(1.4);
+  }
+  100% {
+    transform: rotateZ(0) scale(1);
+  }
+}
+
+@media screen and (min-width: 875px) {
+  .options {
+    display: none;
+  }
+  .show_drawer {
+    display: none;
+  }
 }
