@@ -1,4 +1,12 @@
+.listItem-wrap {
+    padding: 1rem;
+    border-radius: 1.5%;
+    transition: all 300ms;
+}
 
+.listItem-wrap:hover {
+    box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.2);
+}
 
 .listItem-wrap img{
 width: 100%;
